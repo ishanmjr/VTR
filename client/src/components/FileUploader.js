@@ -20,6 +20,14 @@ function FileUploader() {
     const [personName, setPersonName] = useState('');
     const [clothPreview, setClothPreview] = useState('');
     const [personPreview, setPersonPreview] = useState('');
+    // const [outputPreview, setOutputPreview] = useState('');
+    const [showOutput, setShowOutput] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+
+    function handleGenerate() {
+        const imageUrl = 'picture1.jpg';
+        setImagePreview(imageUrl);
+    }
 
     function handleFileUpload(event) {
         const { name, files } = event.target;
@@ -40,6 +48,7 @@ function FileUploader() {
         console.log('Person name:', personName);
         cloth = clothName;
         person = personName;
+        
 
         console.log("Wassup")
 
@@ -49,10 +58,22 @@ function FileUploader() {
         axios.get(`http://localhost:8080/${s}`).then(
             res => {
                 console.log(res)
+                // setOutputPreview(res.data);
+                setShowOutput(true);
             }
         );
 
 }
+
+// function handleGenerateOutput() {
+//     console.log('Generating Output');
+//     axios.get(`http://localhost:8080/output/${outputPreview}`).then(
+//         res => {
+//             console.log(res);
+//             window.open(`http://localhost:8080/${res.data}`, '_blank');
+//         }
+//     );
+// }
 
 return (
     <Center h="100vh" bg="#F5F5F5">
@@ -117,8 +138,28 @@ return (
                     </Text>
                 </Box>
             )}
-        </VStack>
-    </Center>
+            <Button
+                onClick={handleGenerate}
+                w="24vw"
+                bg="#008CBA"
+                color="white"
+                _hover={{ bg: '#007A9D' }}
+                rounded="full"
+                fontFamily="Montserrat"
+                fontWeight="bold"
+                fontSize="md"
+                p={4}
+                >
+                Generate Output
+            </Button>
+            {imagePreview && (
+          <Box w="24vw" h="24vh" p={6} rounded="xl">
+            <Image src={imagePreview} alt="Preview" maxWidth="100%" maxHeight="100%"/>
+          </Box>
+        )}
+                            
+            </VStack>
+            </Center>
 );
 }
 
