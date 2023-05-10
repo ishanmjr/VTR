@@ -9,6 +9,7 @@ import {
     Input,
     Text,
     VStack,
+    Image,
 } from '@chakra-ui/react';
 import axios from 'axios'
 
@@ -17,13 +18,19 @@ var cloth, person;
 function FileUploader() {
     const [clothName, setClothName] = useState('');
     const [personName, setPersonName] = useState('');
+    const [clothPreview, setClothPreview] = useState('');
+    const [personPreview, setPersonPreview] = useState('');
 
     function handleFileUpload(event) {
         const { name, files } = event.target;
         if (name === 'cloth') {
             setClothName(files[0].name);
+            cloth = files[0].name;
+            setClothPreview(URL.createObjectURL(files[0]));
         } else if (name === 'person') {
             setPersonName(files[0].name);
+            person = files[0].name;
+            setPersonPreview(URL.createObjectURL(files[0]));
         }
     }
 
@@ -60,10 +67,20 @@ return (
                     <FormLabel fontFamily="Montserrat" fontWeight="bold">Select cloth image:</FormLabel>
                     <Input type="file" name="cloth" onChange={handleFileUpload} mb={4} />
                 </FormControl>
+                {clothPreview && (
+                        <Box w="24vw" h="24vh" p={6} rounded="xl">
+                            <Image src={clothPreview} alt="Cloth Preview" maxWidth="100%" maxHeight="100%"/>
+                        </Box>
+                    )}
                 <FormControl>
                     <FormLabel fontFamily="Montserrat" fontWeight="bold">Select person image:</FormLabel>
                     <Input type="file" name="person" onChange={handleFileUpload} mb={4} />
                 </FormControl>
+                {personPreview && (
+                        <Box w="24vw" h="24vh" p={6} rounded="xl">
+                            <Image src={personPreview} alt="Person Preview" maxWidth="100%" maxHeight="100%"/>
+                        </Box>
+                    )}
                 <Button
                     type="submit"
                     disabled={!clothName || !personName}
